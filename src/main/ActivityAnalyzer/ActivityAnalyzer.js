@@ -1,3 +1,4 @@
+import { dialog } from "electron";
 
 export function calculateIdleTime(arr, currenttimestamp,mainWindow) {
    const idleThresholdInMin = 1;
@@ -11,6 +12,7 @@ export function calculateIdleTime(arr, currenttimestamp,mainWindow) {
  
    //   userIsIdle = true;
      console.log(`You are idle for ${differenceInMin} minutes`);
+     dialog.showErrorBox("Error" , differenceInMin)
      mainWindow.webContents.send("idletime", differenceInMin);
    }
  }

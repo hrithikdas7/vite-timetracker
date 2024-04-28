@@ -12,6 +12,8 @@ const cron = require('node-cron');
 
 
 let mainWindow
+let baseFilename = "pathh"
+// console.log(`${process.resourcesPath},"resources","app.asar.unpacked"/${baseFilename}.exe`)
 
 function createWindow() {
   // Create the browser window.
@@ -32,6 +34,8 @@ function createWindow() {
     mainWindow.show()
     
     mainWindow.webContents.openDevTools();
+   const lol =  getInteractionTimestamps()
+    mainWindow.webContents.send("idletime" , lol)
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -87,11 +91,13 @@ app.on('window-all-closed', () => {
 ipcMain.on('start-detection', ()=>{
   startDetection('keyboard')
   startDetection('mouse')
-  cron.schedule('* * * * *', () => {
+  cron.schedule('*/5 * * * * *', () => {
     console.log('This cron job runs every minute');
+   
     const movementLogs = getInteractionTimestamps()
+    mainWindow.webContents.send("idletime" , movementLogs)
     const currentTimestamp = Date.now()
-    calculateIdleTime(movementLogs,currentTimestamp, mainWindow )
+    //calculateIdleTime(movementLogs,currentTimestamp, mainWindow )
   });
   
 })
